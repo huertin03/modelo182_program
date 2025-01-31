@@ -25,7 +25,7 @@ def format_registro_1(row):
         modelo = str(row['MODELO']).zfill(3)
         ejercicio = str(row['EJERCICIO']).zfill(4)
         cif = str(row['CIF']).strip()
-        nombre_declarante = clean_string(str(row['NOMBRE DECLARANTE']).strip())
+        nombre_declarante = clean_string(str(row['NOMBRE DECLARANTE']).strip())[:40]
         tipo_soporte = str(row['TIPO DE SOPORTE C/T']).upper()
         telefono_presentador = str(row['TELEFONO PRESENTADOR']).strip()
         nombre_presentador = clean_string(str(row['NOMBRE DEL PRESENTADOR']).strip())
@@ -33,7 +33,7 @@ def format_registro_1(row):
         declaracion_complementaria = str(row['DECLARACION COMPLEMENTARIA O SUSTITUTIVA']).strip().zfill(2)
         numero_identificativo_anterior = str(row['NUMERO IDENTIFICATIVO DE LA DECLARACION ANTERIOR']).strip().zfill(14)
         numero_total_registros = str(row['NUMERO TOTAL DE REGISTROS DE DECLARADOS']).zfill(6)
-        importe_total = str(int(float(str(row['IMPORTE TOTAL']).replace(',', '.')) * 100)).zfill(15)
+        importe_total = str(row['IMPORTE TOTAL']).zfill(15)
         naturaleza_declarante = str(row['NATURALEZA DEL DECLARANTE']).upper()
 
         registro = (
@@ -51,7 +51,7 @@ def format_registro_1(row):
             numero_total_registros +  # 136-141
             importe_total +  # 142-156
             naturaleza_declarante +  # 157
-            ' ' * 93  # 158-250
+            ' ' * 90  # 158-250
         )
 
         return registro
@@ -72,7 +72,7 @@ def format_registro_2(row):
         codigo = str(row['CODIGO']).zfill(2)
 
         dni = str(row['DNI/NIF']).strip() if codigo != '99' else '         '
-        nombre = clean_string(str(row['NOMBRE']).strip())
+        nombre = clean_string(str(row['NOMBRE']).strip())[:40]
         codigo = str(row['CODIGO']).zfill(2)
         
         # Manejo del importe

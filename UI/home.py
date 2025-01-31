@@ -1,8 +1,8 @@
 import os
-from idlelib.debugger_r import frametable
-from tkinter import ttk, StringVar, Button, filedialog, Toplevel
+from utils.buildResolve import resolve_route
+from tkinter import ttk, StringVar, filedialog, Toplevel
 
-from utils.scritpts import convert_excel_to_182
+from utils.scripts import convert_excel_to_182
 
 
 class Home:
@@ -18,6 +18,8 @@ class Home:
 
         self.convert_button = ttk.Button(root, text="Convertir", command=self.convert_excel_to_182)
         self.convert_button.grid(row=2, column=0, padx=20, pady=10)
+
+        self.modal = None
 
 
     def create_file_input(self):
@@ -62,14 +64,34 @@ class Home:
         self.show_message(message)
 
     def show_message(self, message):
-        modal = Toplevel(self.root)
-        modal.title("Resultado de la conversión")
-        modal.geometry("400x200")
-        modal.transient(self.root)
-        modal.grab_set()
+        self.modal = Toplevel(self.root)
+        self.modal.title("Resultado de la conversión")
 
-        message_label = ttk.Label(modal, text=message)
+        # Set the width and height of the window
+        window_width = 1000  # Desired width
+        window_height = 110  # Desired height
+        self.modal.geometry(f"{window_width}x{window_height}")
+
+        # Make the window appear in the center of the previous root window
+        self.modal.update_idletasks()
+        x = (self.modal.winfo_screenwidth() // 2) - (window_width // 2)
+        y = (self.modal.winfo_screenheight() // 2) - (window_height // 2)
+        self.modal.geometry(f"+{x}+{y}")
+
+        self.modal.transient(self.root)
+        self.modal.grab_set()
+
+        message_label = ttk.Label(self.modal, text=message)
         message_label.pack(padx=20, pady=20)
 
-        close_button = Button(modal, text="OK", command=modal.destroy)
-        close_button.pack(pady=10)
+        # Buttons Frame
+        buttons_frame = ttk.Frame(self.modal)
+        buttons_frame.pack(pady=10)
+
+        close_button = ttk.Button(buttons_frame, text="OK", command=self.modal.destroy)
+        close_button.pack(side="right", padx=10)
+
+        if message.startswith("Archivo"):
+            #
+            open_button = ttk.Button(buttons_frame, text="Abrir fichero", command=lambda: os.startfile(message.split(" ")[1]))
+            open_button.pack(side="left", padx=10)

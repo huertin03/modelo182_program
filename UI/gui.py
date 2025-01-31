@@ -2,6 +2,7 @@ from tkinter import ttk
 
 from UI.header import Header
 from UI.home import Home
+from UI.resources import Resources
 
 
 class GUI:
@@ -18,6 +19,7 @@ class GUI:
 
         self.resources_tab = ttk.Frame(self.notebook)
         self.notebook.add(self.resources_tab, text="Recursos")
+        self.resources = Resources(self.resources_tab)
 
 
 
